@@ -25,10 +25,8 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
 
   const togglePlay = () => {
     if (isPlaying) {
-      videoRef.current?.pause();
       audioRef.current?.pause();
     } else {
-      videoRef.current?.play();
       audioRef.current?.play();
     }
     setIsPlaying(!isPlaying);
@@ -86,8 +84,9 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
       <div className="fixed bottom-6 right-6 z-50 pointer-events-auto" style={{ transform: 'translate(-0.3cm, -0.1cm)' }}>
         <button
           onClick={togglePlay}
-          aria-label={isPlaying ? "Pause video" : "Play video"}
-          className="w-11 h-11 rounded-full glass-card-gold flex items-center justify-center text-amber-300 hover:scale-110 active:scale-95 transition-all duration-300 shadow-lg border border-amber-400/40"
+          aria-label={isPlaying ? "Pause music" : "Play music"}
+          style={{ background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.55) 0%, rgba(136, 19, 55, 0.7) 100%)' }}
+          className="w-11 h-11 rounded-full backdrop-blur-md flex items-center justify-center text-amber-300 hover:scale-110 active:scale-95 transition-all duration-300 shadow-lg border border-amber-400/60"
         >
           {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-0.5" />}
         </button>
