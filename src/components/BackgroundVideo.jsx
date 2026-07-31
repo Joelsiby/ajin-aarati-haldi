@@ -74,7 +74,7 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
         style={{ height: '1cm', bottom: 'calc(1.5rem + 22px + 5.2cm)' }}
         className="fixed inset-x-0 z-50 flex items-center justify-end bg-transparent pointer-events-auto"
       >
-        <span style={{ paddingRight: 'calc(1.5rem + 22px + 0.5cm)' }}>
+        <span style={{ paddingRight: 'calc(1.5rem + 22px + 1.5cm)' }}>
           <MapPin size={18} className="text-amber-300" />
         </span>
       </button>
