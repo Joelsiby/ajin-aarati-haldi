@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Parisienne&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-script: 'Great Vibes', 'Alex Brush', cursive;
+  --font-accent-script: 'Alex Brush', cursive;
+  --font-serif: 'Cinzel', 'Cormorant Garamond', serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  
+  --color-gold: #D4AF37;
+  --color-gold-light: #F9E79F;
+  --color-gold-dark: #996515;
+  --color-haldi: #F59E0B;
+  --color-haldi-light: #FDE68A;
+  --color-maroon: #881337;
+  --color-maroon-dark: #450A0A;
+  
+  --bg-overlay: rgba(15, 10, 25, 0.72);
+  --glass-bg: rgba(26, 18, 38, 0.65);
+  --glass-border: rgba(212, 175, 55, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-body);
+  background-color: #0c0814;
+  color: #ffffff;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(12, 8, 20, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 4px;
+}
+
+/* Typography Utilities */
+.font-script {
+  font-family: var(--font-script);
+}
+.font-accent-script {
+  font-family: var(--font-accent-script);
+}
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Gold Gradient Text */
+.gold-text {
+  background: linear-gradient(135deg, #FFF5C0 0%, #D4AF37 50%, #AA771C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Luxury Glass Box */
+.glass-card {
+  background: rgba(24, 16, 36, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+}
+
+.glass-card-gold {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(136, 19, 55, 0.25) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+/* Floral / Ornate Borders */
+.ornate-border {
+  position: relative;
+}
+.ornate-border::before, .ornate-border::after {
+  content: "✤";
+  position: absolute;
+  color: var(--color-gold);
+  font-size: 1.2rem;
+}
+.ornate-border::before { top: 6px; left: 10px; }
+.ornate-border::after { bottom: 6px; right: 10px; }
+
+/* Pulse Glow Animation */
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.7); }
+}
+
+.gold-glow {
+  animation: goldPulse 3s infinite ease-in-out;
+}
+
+/* Floating Flower Animation */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+.floating {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Mobile Frame Wrapper for Desktop Simulator */
+.mobile-frame-container {
+  max-width: 430px;
+  width: 100%;
+  height: 90vh;
+  max-height: 880px;
+  border-radius: 40px;
+  border: 10px solid #231b2e;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 0 2px var(--color-gold);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Custom Animation classes */
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
