@@ -11,25 +11,18 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        setIsPlaying(false);
-      });
-    }
-    if (audioRef.current) {
-      audioRef.current.play().catch(() => {
-        setIsPlaying(false);
-      });
-    }
+    videoRef.current?.play().catch(() => {});
+    audioRef.current?.play().catch(() => {
+      setIsPlaying(false);
+    });
   }, []);
 
   const togglePlay = () => {
-    if (isPlaying) {
-      audioRef.current?.pause();
+    if (audioRef.current?.paused) {
+      audioRef.current.play().catch(() => {});
     } else {
-      audioRef.current?.play();
+      audioRef.current?.pause();
     }
-    setIsPlaying(!isPlaying);
   };
 
   const openMaps = () => {
@@ -59,7 +52,13 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
         <div className="absolute inset-0 bg-gradient-to-br from-amber-950 via-rose-950 to-slate-950" />
       )}
 
-      <audio ref={audioRef} src={musicPath} loop />
+      <audio
+        ref={audioRef}
+        src={musicPath}
+        loop
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
 
       {/* Ceremony Title Overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10 -translate-y-8">
