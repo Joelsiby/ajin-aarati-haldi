@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Play, Pause, MapPin } from 'lucide-react';
+import { Play, Pause } from 'lucide-react';
 
 const VENUE_ADDRESS = "Unity Road, KRPA 75, Kochi, Kerala 682033, India";
 const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/L4ikkEZ2dAnV9XvJ9";
@@ -17,7 +17,8 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
     });
   }, []);
 
-  const togglePlay = () => {
+  const togglePlay = (e) => {
+    e.stopPropagation();
     if (audioRef.current?.paused) {
       audioRef.current.play().catch(() => {});
     } else {
@@ -35,7 +36,12 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
   };
 
   return (
-    <div className="fixed inset-0 w-full h-dvh overflow-hidden pointer-events-none z-0">
+    <div
+      onClick={openMaps}
+      role="button"
+      aria-label="Open venue in Maps"
+      className="fixed inset-0 w-full h-dvh overflow-hidden pointer-events-auto z-0"
+    >
       {/* Background Video */}
       {!hasError ? (
         <video
@@ -59,18 +65,6 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
-
-      {/* Full-width Clickable Strip for Maps (Interactive pointer-events enabled) */}
-      <button
-        onClick={openMaps}
-        aria-label="Open venue in Maps"
-        style={{ height: '1cm', bottom: 'calc(1.5rem + 22px + 5.2cm)' }}
-        className="fixed inset-x-0 z-50 flex items-center justify-end bg-transparent pointer-events-auto"
-      >
-        <span style={{ paddingRight: 'calc(1.5rem + 22px + 1.5cm)' }}>
-          <MapPin size={18} className="text-amber-300" />
-        </span>
-      </button>
 
       {/* Floating Play/Pause Control (Interactive pointer-events enabled) */}
       <div className="fixed bottom-6 right-6 z-50 pointer-events-auto" style={{ transform: 'translate(-0.3cm, -0.1cm)' }}>
