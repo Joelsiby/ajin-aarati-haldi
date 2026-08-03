@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Play, Pause } from 'lucide-react';
+import { Play, Pause, MapPin } from 'lucide-react';
 
 const VENUE_ADDRESS = "Unity Road, KRPA 75, Kochi, Kerala 682033, India";
 const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/L4ikkEZ2dAnV9XvJ9";
@@ -77,12 +77,7 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
   };
 
   return (
-    <div
-      onClick={openMaps}
-      role="button"
-      aria-label="Open venue in Maps"
-      className="fixed inset-0 w-full h-dvh overflow-hidden pointer-events-auto z-0"
-    >
+    <div className="fixed inset-0 w-full h-dvh overflow-hidden pointer-events-none z-0">
       {/* Background Video */}
       {!hasError ? (
         <video
@@ -109,8 +104,17 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
         onPause={() => setIsPlaying(false)}
       />
 
-      {/* Floating Play/Pause Control (Interactive pointer-events enabled) */}
-      <div className="fixed bottom-6 right-6 z-50 pointer-events-auto" style={{ transform: 'translate(-0.3cm, -0.1cm)' }}>
+      {/* Floating Controls (Interactive pointer-events enabled) */}
+      <div className="fixed bottom-6 right-6 z-50 flex items-center space-x-3 pointer-events-auto" style={{ transform: 'translate(-0.3cm, -0.1cm)' }}>
+        <button
+          onClick={openMaps}
+          aria-label="Open venue in Maps"
+          style={{ background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.55) 0%, rgba(136, 19, 55, 0.7) 100%)' }}
+          className="w-11 h-11 rounded-full backdrop-blur-md flex items-center justify-center text-amber-300 hover:scale-110 active:scale-95 transition-all duration-300 shadow-lg border border-amber-400/60"
+        >
+          <MapPin size={18} />
+        </button>
+
         <button
           onClick={togglePlay}
           aria-label={isPlaying ? "Pause music" : "Play music"}
