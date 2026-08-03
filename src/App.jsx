@@ -10,7 +10,7 @@ export default function App() {
     window.addEventListener('resize', checkDesktop);
     return () => window.removeEventListener('resize', checkDesktop);
   }, []);
-
+//test
   if (isDesktop) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center bg-[#0c0814] text-center px-6">
