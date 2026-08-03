@@ -12,19 +12,24 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
+    // Some mobile browsers only honor the `muted` DOM property (not just the
+    // HTML attribute) for autoplay purposes — set it explicitly before play().
+    if (videoRef.current) videoRef.current.muted = true;
     videoRef.current?.play().catch(() => {});
     audioRef.current?.play().catch(() => {});
 
-    // Browsers block autoplay of unmuted audio until the user interacts with
-    // the page. Start it silently on the very first interaction if it hasn't
-    // started already and the user hasn't explicitly paused it since.
-    const startAudioOnFirstInteraction = () => {
+    // Browsers can block autoplay outright until the user interacts with the
+    // page at all. Retry both silently on the very first tap/touch anywhere.
+    const startMediaOnFirstInteraction = () => {
+      if (videoRef.current?.paused) {
+        videoRef.current.play().catch(() => {});
+      }
       if (!userPausedRef.current && audioRef.current?.paused) {
         audioRef.current.play().catch(() => {});
       }
     };
-    window.addEventListener('pointerdown', startAudioOnFirstInteraction, { once: true });
-    window.addEventListener('touchstart', startAudioOnFirstInteraction, { once: true });
+    window.addEventListener('pointerdown', startMediaOnFirstInteraction, { once: true });
+    window.addEventListener('touchstart', startMediaOnFirstInteraction, { once: true });
 
     // Resume playback when returning to the tab (e.g. after opening Maps).
     const handleVisibility = () => {
@@ -37,8 +42,8 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
     document.addEventListener('visibilitychange', handleVisibility);
 
     return () => {
-      window.removeEventListener('pointerdown', startAudioOnFirstInteraction);
-      window.removeEventListener('touchstart', startAudioOnFirstInteraction);
+      window.removeEventListener('pointerdown', startMediaOnFirstInteraction);
+      window.removeEventListener('touchstart', startMediaOnFirstInteraction);
       document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
@@ -79,6 +84,7 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
           loop
           muted
           playsInline
+          preload="auto"
           onError={() => setHasError(true)}
           onPause={() => videoRef.current?.play().catch(() => {})}
           className="absolute inset-0 w-full h-full object-cover"
