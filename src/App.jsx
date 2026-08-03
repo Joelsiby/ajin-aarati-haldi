@@ -1,8 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import BackgroundVideo from './components/BackgroundVideo';
+import EnvelopeOpening from './components/EnvelopeOpening';
 
 export default function App() {
   const [isDesktop, setIsDesktop] = useState(false);
+  const [showEnvelope, setShowEnvelope] = useState(true);
+
+  const handleEnvelopeComplete = useCallback(() => {
+    setShowEnvelope(false);
+  }, []);
 
   useEffect(() => {
     const checkDesktop = () => setIsDesktop(window.innerWidth > 768);
@@ -24,6 +30,7 @@ export default function App() {
   return (
     <div className="min-h-screen w-full relative bg-[#0c0814]">
       <BackgroundVideo videoPath="/background.mp4" />
+      {showEnvelope && <EnvelopeOpening onOpenComplete={handleEnvelopeComplete} />}
     </div>
   );
 }
