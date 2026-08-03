@@ -7,21 +7,49 @@ const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/L4ikkEZ2dAnV9XvJ9";
 export default function BackgroundVideo({ videoPath = "/background.mp4", musicPath = "/man_mast_magan.mp3" }) {
   const videoRef = useRef(null);
   const audioRef = useRef(null);
+  const userPausedRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     videoRef.current?.play().catch(() => {});
-    audioRef.current?.play().catch(() => {
-      setIsPlaying(false);
-    });
+    audioRef.current?.play().catch(() => {});
+
+    // Browsers block autoplay of unmuted audio until the user interacts with
+    // the page. Start it silently on the very first interaction if it hasn't
+    // started already and the user hasn't explicitly paused it since.
+    const startAudioOnFirstInteraction = () => {
+      if (!userPausedRef.current && audioRef.current?.paused) {
+        audioRef.current.play().catch(() => {});
+      }
+    };
+    window.addEventListener('pointerdown', startAudioOnFirstInteraction, { once: true });
+    window.addEventListener('touchstart', startAudioOnFirstInteraction, { once: true });
+
+    // Resume playback when returning to the tab (e.g. after opening Maps).
+    const handleVisibility = () => {
+      if (document.visibilityState !== 'visible') return;
+      videoRef.current?.play().catch(() => {});
+      if (!userPausedRef.current) {
+        audioRef.current?.play().catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      window.removeEventListener('pointerdown', startAudioOnFirstInteraction);
+      window.removeEventListener('touchstart', startAudioOnFirstInteraction);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, []);
 
   const togglePlay = (e) => {
     e.stopPropagation();
     if (audioRef.current?.paused) {
+      userPausedRef.current = false;
       audioRef.current.play().catch(() => {});
     } else {
+      userPausedRef.current = true;
       audioRef.current?.pause();
     }
   };
@@ -52,6 +80,7 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
           muted
           playsInline
           onError={() => setHasError(true)}
+          onPause={() => videoRef.current?.play().catch(() => {})}
           className="absolute inset-0 w-full h-full object-cover"
         />
       ) : (
