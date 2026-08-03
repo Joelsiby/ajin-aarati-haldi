@@ -4,7 +4,7 @@ import { Play, Pause, MapPin } from 'lucide-react';
 const VENUE_ADDRESS = "Unity Road, KRPA 75, Kochi, Kerala 682033, India";
 const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/L4ikkEZ2dAnV9XvJ9";
 
-export default function BackgroundVideo({ videoPath = "/background.mp4", musicPath = "/sitakalyana_music.mp3" }) {
+export default function BackgroundVideo({ videoPath = "/background.mp4", musicPath = "/man_mast_magan.mp3" }) {
   const videoRef = useRef(null);
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -59,13 +59,6 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
-
-      {/* Ceremony Title Overlay */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10 -translate-y-8">
-        <p className="font-['Parisienne'] text-4xl sm:text-5xl text-[#C9972B] leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)]">
-          Ajin & Aarati
-        </p>
-      </div>
 
       {/* Full-width Clickable Strip for Maps (Interactive pointer-events enabled) */}
       <button
