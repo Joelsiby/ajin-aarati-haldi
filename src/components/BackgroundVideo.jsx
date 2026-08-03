@@ -11,11 +11,19 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
   const [isPlaying, setIsPlaying] = useState(true);
   const [hasError, setHasError] = useState(false);
 
+  // Chrome evaluates autoplay eligibility as soon as the <video> node is
+  // created — a useEffect (which fires after that) can be too late to set
+  // `muted`, so this callback ref sets it in the same synchronous tick the
+  // node is attached, before playback is ever attempted.
+  const setVideoRef = (el) => {
+    videoRef.current = el;
+    if (el) {
+      el.muted = true;
+      el.play().catch(() => {});
+    }
+  };
+
   useEffect(() => {
-    // Some mobile browsers only honor the `muted` DOM property (not just the
-    // HTML attribute) for autoplay purposes — set it explicitly before play().
-    if (videoRef.current) videoRef.current.muted = true;
-    videoRef.current?.play().catch(() => {});
     audioRef.current?.play().catch(() => {});
 
     // Browsers can block autoplay outright until the user interacts with the
@@ -78,7 +86,7 @@ export default function BackgroundVideo({ videoPath = "/background.mp4", musicPa
       {/* Background Video */}
       {!hasError ? (
         <video
-          ref={videoRef}
+          ref={setVideoRef}
           src={videoPath}
           autoPlay
           loop
